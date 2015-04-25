@@ -222,12 +222,12 @@ function grabActivity(items) {
 		var obj = {};
 		for (var i=0; i < len; i++) {
 			var source = $('#activity-template').html();
-			console.log('source: ', source);
+			// console.log('source: ', source);
 			var template = Handlebars.compile(source);
-			console.log('template: ', template);
+			// console.log('template: ', template);
 			code += template(items[i]);
 		}
-		console.log('code: ', code);
+		// console.log('code: ', code);
 		$("#my-activity-list").html(code);
 		$('#my-activity-list').listview('refresh');
 	}
@@ -236,6 +236,43 @@ function grabActivity(items) {
 	}
 
 	$('#my-activity-list').listview('refresh');
+}
+
+function viewWine(act_id) {
+	var trans = db.transaction(storeName, 'readonly');
+	var store = trans.objectStore(storeName);
+
+	var request = store.get(act_id);
+
+	request.onerror = function(error) {
+		console.log('error finding activity:', error);
+
+	}
+
+	request.onsuccess = function(event) {
+		var code = '';
+		var start = new Date().getTime();
+		// console.log('obj from viewWine: ', event.target.result);
+		var diff = timedDifference(start, event.target.result['timeAdded']);
+		console.log('diff: ', diff);
+
+
+	}
+}
+
+function timeDifference(current, original) {
+	var msPerMinute = 60 * 1000;
+	var msPerHour = msPerMinute * 60;
+	var msPerDay = msPerHour * 24;
+	var msperMonth = msPerDay * 30;
+	var msPerYear = msperDay * 365;
+
+	var msElapsed = current - original;
+
+	if (msElapsed < msPerMinute) {
+		return Math.round(msElapsed/1000) + ' seconds ago.';
+	}
+	else if 
 }
 
 // Document ready
