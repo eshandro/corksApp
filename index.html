@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<title>Corks! Cellar your wine.</title>
+		<meta name="description" content="Corks -- an app for organinzing your wine cellar!">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+		<meta http-equiv="cleartype" content="on">
+
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/touch/apple-touch-icon-144x144-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/touch/apple-touch-icon-114x114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/touch/apple-touch-icon-72x72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="img/touch/apple-touch-icon-57x57-precomposed.png">
+		<link rel="shortcut icon" sizes="196x196" href="img/touch/touch-icon-196x196.png">
+		<link rel="shortcut icon" href="img/touch/apple-touch-icon.png">
+
+		<!-- Tile icon for Win8 (144x144 + tile color) -->
+		<meta name="msapplication-TileImage" content="img/touch/apple-touch-icon-144x144-precomposed.png">
+		<meta name="msapplication-TileColor" content="#222222">
+
+		<!-- SEO: If mobile URL is different from desktop URL, add a canonical link to the desktop page -->
+		<!--
+		<link rel="canonical" href="http://www.example.com/" >
+		-->
+
+		<!-- Add to homescreen for Chrome on Android -->
+		<!--
+		<meta name="mobile-web-app-capable" content="yes">
+		-->
+
+		<!-- For iOS web apps. Delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
+		
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="apple-mobile-web-app-title" content="Corks!">
+		
+
+		<!-- This script prevents links from opening in Mobile Safari. https://gist.github.com/1042026 -->
+		<!--
+		<script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
+		-->
+
+	   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.css" />
+
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js'></script>
+		<script src="js/vendor/modernizr-2.7.1.min.js"></script>
+		<script src="js/helper.js"></script>
+		<!-- Enable the google.maps object --> 
+		<script src='http://maps.google.com/maps/api/js?sensor=false'></script>
+	</head>
+	<body>
+
+		<!-- Add your site or application content here -->
+		<!-- Activity Tab Page -->
+		<div id="activity" data-role='page'>
+			<div data-role='header'>
+				<h1>Corks</h1>
+				<h1>Your Activity</h1>
+				<a href="javascript:void(0);" data-role="button" onClick="getAllItems(grabActivity);" class="ui-btn-right" data-icon="refresh">Refresh</a>
+				<div data-role='navbar' data-iconpos='top'>
+					<ul>
+						<li>
+							<a data-icon='star' class='ui-btn-active ui-state-persist' href='#activity'>Activity</a>
+						</li>
+						<li>
+							<a data-icon='grid' data-transition='slide' href="#manage">Manage</a>
+						</li> 
+						<li>
+							<a data-icon='info' data-transition='slide' href="#find">Find</a>
+						</li> 
+						<li>
+							<a data-icon='gear' data-transition='slide' href="#settings">Settings</a>
+						</li>
+						<li>
+							<a data-icon='search' data-transition='slide' href="#search">Search</a>
+						</li> 
+					</ul>
+				</div>
+
+
+			</div>
+			<!-- /header -->
+
+			<div id="my-activity" data-role='content'>
+				<ul data-role="list-view" id="my-activity-list"></ul>
+			</div>
+			<!-- /content -->
+
+			<div data-role='footer'>
+				<h4>Page Footer</h4>
+			</div>
+			<!-- /footer -->
+		</div>
+
+		<!-- Manage Tab Page -->
+		<div id="manage" data-role='page'>
+			<div data-role='header'>
+				<h1>Corks</h1>
+				<h1>Manage</h1>
+				<div data-role='navbar' data-iconpos='top'>
+					<ul>
+						<li>
+							<a data-icon='star' data-transition='slide' href='#activity'>Activity</a>
+						</li>
+						<li>
+							<a data-icon='grid' class='ui-btn-active ui-state-persist' href="#manage">Manage</a>
+						</li> 
+						<li>
+							<a data-icon='info' data-transition='slide' href="#find">Find</a>
+						</li> 
+						<li>
+							<a data-icon='gear' data-transition='slide' href="#settings">Settings</a>
+						</li>
+						<li>
+							<a data-icon='search' data-transition='slide' href="#search">Search</a>
+						</li> 
+					</ul>
+				</div>
+
+
+			</div>
+			<!-- /header -->
+
+			<div data-role='content'>
+				<p>Manage!</p>
+				<h2>Add A Wine</h2>
+				<!-- Success and error messages for form, initially hidden -->
+				<div class='success' id='success-msg' style='display: none;'>Your wine has been added!</div>
+				<div class='error' id='error-msg' style='display: none;'>You have errors in your form, please check the data entered.</div>
+
+
+				<!-- jQ mobile defaults to sending forms via AJAX, but you want to handle 
+				without sending anything to a server, so set data-ajax to false
+				Also, the 'return false' after the onsubmit function stops the form from 
+				submitting, like preventDefault() -->
+				<form id='manage-form' data-ajax='false' onsubmit='handleForm(); return false;'>
+					<!-- Note: jQ Monile data-mini attr enables the field to extend to the width 
+					of the screen no matter orientation -->
+					<label for='wine_name'>Wine Name:</label>
+					<input type='text' name='wine_name' id='wine_name' class='required' data-mini='true'>
+					
+					<label for='winery_name'>Winery Name:</label>
+					<input type='text' name='winery_name' id='winery_name' class='required' data-mini='true'>
+					
+					<label for='wine_color' class='select'>Color</label>
+					<select name='wine_color' id='wine_color' data-mini='true'>
+						<option value='red'>Red</option>
+						<option value='white'>White</option>
+						<option value='other'>Other</option>
+					</select>
+					
+					<label for='wine_desc'>Wine Description:</label>
+					<textarea name='wine_desc' id='wine_desc' class='required'></textarea>
+
+					<label for='is_add'>Do you want to add this wine to your cellar?</label>
+					<input type='checkbox' name='is_add' onchange='toggleBox(this);' id='is_add' class='custom required'>
+
+					<div id='cellar_ques' style='display: none;'>
+						<label for='cellar_qty'>Cellar Quanity:</label>
+						<input type='number' name='cellar_qty' id='cellar_qty' value=''>
+						<label for='cellar_desc'>Cellar Notes:</label>
+						<textarea name='cellar_desc' id='cellar_desc'></textarea>
+					</div>
+					<button>Add Wine</button>
+				</form>
+			</div>
+			<!-- /content -->
+
+			<div data-role='footer'>
+				<h4>Page Footer</h4>
+			</div>
+			<!-- /footer -->
+		</div>        
+		<!-- / Manage Tab page --> 
+
+		<!-- Find tab page -->
+		<div id='find' data-role='page'>
+			<div data-role='header' data-position="inline">
+				<h1>Corks</h1>
+				<h1>Find</h1>
+				<a href="javascript:void(0);" data-role="button" onClick="refreshLocation();" class="ui-btn-right" data-icon="refresh">Refresh</a>
+				<div data-role='navbar'data-iconpos='bottom'>
+					<ul>
+						<li>
+							<a data-icon='star' data-transition='slide' href='#activity'>Activity</a>
+						</li>
+						<li>
+							<a data-icon='grid' href="#manage">Manage</a>
+						</li> 
+						<li>
+							<a data-icon='info' class='ui-btn-active ui-state-persist' data-transition='slide' href="#find">Find</a>
+						</li> 
+						<li>
+							<a data-icon='gear' data-transition='slide' href="#settings">Settings</a>
+						</li>
+						<li>
+							<a data-icon='search' data-transition='slide' href="#search">Search</a>
+						</li> 
+					</ul>
+				</div>
+				<!-- /Find navbar -->
+			</div>
+			<!-- /Find header -->
+			<div id="map" data-role='content' style="height: 400px; width: 100%;">
+			</div>
+			<!-- /Find content -->
+		</div>
+		<!-- /Find page -->
+
+		<!-- <script src="js/vendor/jquery-2.1.0.min.js"></script> -->
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+		<script src="js/helper.js"></script>
+		<script src="js/geo.js"></script>
+		<script src="js/social.js"></script>
+
+		<script src="js/main.js"></script>
+
+		<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
+		<script>
+			(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+			function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+			e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+			e.src='//www.google-analytics.com/analytics.js';
+			r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+			ga('create','UA-XXXXX-X');ga('send','pageview');
+		</script>
+		-->
+		<!-- Handlebars template -->
+		<script id="activity-template" type="text/x-handlebars-template">
+			<li>
+				<a href='#wineDetail' onClick='viewWine({{activity_id}})'>
+					<h2>{{wine_name}}</h2>
+					<p>Added {{qty}} to My Cellar</p>
+					<p class="pad">{{timeDiffActivity timeAdded}}</p>
+				</a>
+			</li>
+		</script>
+
+	</body>
+</html>
