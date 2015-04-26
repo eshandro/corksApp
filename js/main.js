@@ -264,7 +264,7 @@ function viewWine(act_id) {
 
 		$('#detail').html(code);
 
-		
+
 
 	}
 }
@@ -298,10 +298,82 @@ function timeDifference(current, original) {
 	}
 }
 
+/**
+ * Local storage functionality
+ * 
+ */
+
+var myLocalStorage = {
+	set: function(index,value) {
+		var setValue;
+		if (typeof value == 'object') {
+			setValue = JSON.stringify(value);
+		}
+		else {
+			setValue = value;
+		}
+
+		localStorage.setItem(index, setValue);
+	},
+	
+	remove: function(index) {
+		localStorage.setItem(index, '');
+	},
+	
+	get: function(index, testString) {
+		if (testString == 'JSON') {
+			return JSON.parse(localStorage.getItem(index));
+		}
+		else {
+			return localStorage.getItem(index);
+		}
+	},
+
+	clear: function() {
+		localStorage.clear();
+	}
+
+}
+
+/**
+ * Saves user to LocalStorage
+ */
+function saveUser() {
+	$('#success-msg-user').hide();
+	myLocalStorage.set('username', $('#user_name_save').val());
+	$('#success-msg-user').show();
+}
+
+
+function searchWines(items) {
+	var results = {};
+	var searchTerm = $('#search-basic').val();
+	if (!items) {
+		alert('You have no wines in your cellar to search!');
+		return;
+	}
+	var len = items.lenth;
+	for (var i=0; i < len; i++) {
+		var currentObj = items[i];
+		var objToArray = object.keys(currentObj);
+		var len2 = objToArray.length;
+		
+		}
+	}
+
+}
+
 // Document ready
 $(document).ready(function() { 
 	console.log('Ready');
 
+	/**
+	 * Checks for user in localstorage and sets val in settings form to it if exists
+	 */
+	var user = myLocalStorage.get('username');
+	if (user) {
+		$('#user_name_save').val(user);
+	}
 
 	/**
 	 * Script to hanlde the map being created and destroyed
@@ -312,7 +384,23 @@ $(document).ready(function() {
 		if (newHash) {
 			if (newHash === 'find') {
 				if ($.trim($('#map').html()) === '') {
-					navigator.geolocation.getCurrentPosition(successPosition, errorPosition);
+					// Get time of most recent location 
+					var lastTime = myLocalStorage.get('lastGeoLocTime');
+					if (lastTime) {
+						var currentTime = new Date().getTime();
+						var geoTimeDiff = parseInt(lastTime) - parseInt(currentTime);
+						if (geoTimeDiff > 250) {
+							getCurrentPosition();
+						}
+						else {
+							navigator.geolocation.getCurrentPosition(successPosition, errorPosition);
+							
+						}
+					}
+					else {
+						navigator.geolocation.getCurrentPosition(successPosition, errorPosition);
+					}
+
 				}
 			}
 			else if (newHash === 'activity') {

@@ -2,15 +2,18 @@
 var lat, lng, map;
 var infoWindow = new google.maps.InfoWindow();
 
-// Callback functions for geolocation
+function getCurrentPosition() {
+	var position = {
+		coords: {
+			latitude: lat,
+			longitude: lng
+		}
+	};
+	successPosition(position);
+}
 
-// Success function
-function successPosition(position) {
-	lat = position.coords.latitude;
-	lng = position.coords.longitude;
-
+function drawMap () {
 	var latlng = new google.maps.LatLng(lat, lng);
-
 	
 	var myOptions = {
 		zoom: 13,
@@ -35,6 +38,23 @@ function successPosition(position) {
 	findPlaces();
 	// Makes map expand to size of window on resize event
 	google.maps.event.trigger(map, 'resize');
+}
+
+// Callback functions for geolocation
+// Success function
+function successPosition(position) {
+	if (position) {
+		lat = position.coords.latitude;
+		lng = position.coords.longitude;
+
+		var currentTime = new Date().getTime();
+		myLocalStorage.set('lastGeoLocTime', currentTime);
+		
+		drawMap();		
+	}
+	else {
+		drawMap();
+	}
 }
 
 // Error function

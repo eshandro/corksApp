@@ -235,6 +235,64 @@
 		</div>
 		<!-- /wine details page -->
 
+		<!-- Settings -->
+
+		<div id="settings" class="page" data-role="page">
+			<div data-role="header" data-position="inline">
+				<h1>Settings</h1>
+				<div data-role="navbar" data-iconpos="bottom">
+					<ul>
+						<li><a data-icon="star" href="#activity">Activity</a></li>
+						<li><a data-icon="grid" href="#manage">Manage</a></li>
+						<li><a data-icon="info" href="#find">Find</a></li>
+						<li><a data-icon="gear" class="ui-btn-active" href="#settings">Settings</a></li>
+						<li><a data-icon="search" href="#search">Search</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		
+		<div data-role="content">
+			
+			<div class="success" id="success-msg-user" style="display: none;">Awesome, your name is saved!</div>
+			
+			<label for="user_name">Your name:</label>
+			<input type="text" class="required" name="user_name" id="user_name_save" data-mini="true" />
+			
+			<button onclick="saveUser();">Save User</button>
+		</div>
+	</div>
+	<!-- / Settings page -->
+
+		<!-- Search -->
+
+		<div id="search" data-role="page">
+			<div data-role="header" data-position="inline">
+				<h1>Search</h1>
+				<div data-role="navbar" data-iconpos="bottom">
+					<ul>
+						<li><a data-icon="star" href="#activity">Activity</a></li>
+						<li><a data-icon="grid" href="#manage">Manage</a></li>
+						<li><a data-icon="info" href="#find">Find</a></li>
+						<li><a data-icon="gear" href="#settings">Settings</a></li>
+						<li><a data-icon="search" class="ui-btn-active"  href="#search">Search</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+
+
+			<div id="my-search" data-role="content">
+				<form id="search-form" data-ajax="false" onsubmit="SearchWines(); return false;" style="padding-bottom: 25px">
+					<label for="search-basic">Search Input:</label>
+					<input type="search" name="search" id="search-basic" value="" />
+				</form>
+				
+				<div date-role="content">	
+					<ul data=role="list-view" id="my-search-list"></ul>
+				</div>
+			</div>
+		</div> 
+		<!-- / Search page  -->
+
 		<!-- <script src="js/vendor/jquery-2.1.0.min.js"></script> -->
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
