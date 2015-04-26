@@ -211,6 +211,30 @@
 		</div>
 		<!-- /Find page -->
 
+		<!-- Wine Details Page -->
+		<div id="wineDetail" data-role="page">
+			<div data-role="header" data-position="inline">
+				<h1>Wine Details</h1>
+				<div data-role="navbar" data-iconpos="bottom">
+					<ul>
+						<li><a data-icon="star" class="ui-btn-active" href="#activity">Activity</a></li>
+						<li><a data-icon="grid" href="#manage">Manage</a></li>
+						<li><a data-icon="info" href="#find">Find</a></li>
+						<li><a data-icon="gear" href="#settings">Settings</a></li>
+						<li><a data-icon="search" href="#search">Search</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="detail" data-role="content">
+
+			</div> <!-- /content -->
+			<!-- Unable to access new Twitter API -->
+			<!--
+			<div id="social"><p>Loading Social Results &hellip;</p></div>
+			-->
+		</div>
+		<!-- /wine details page -->
+
 		<!-- <script src="js/vendor/jquery-2.1.0.min.js"></script> -->
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -231,7 +255,7 @@
 			ga('create','UA-XXXXX-X');ga('send','pageview');
 		</script>
 		-->
-		<!-- Handlebars template -->
+		<!-- Handlebars templates -->
 		<script id="activity-template" type="text/x-handlebars-template">
 			<li>
 				<a href='#wineDetail' onClick='viewWine({{wine_id}})'>
@@ -240,6 +264,11 @@
 					<p class="pad">{{timeDiffActivity timeAdded}}</p>
 				</a>
 			</li>
+		</script>
+		<!-- New Twitter API requires oAuth so needs server side -->
+		<!-- So skipping this portion of the book -->
+		<script id="social-template" type="text/x-handlebars-template">
+
 		</script>
 
 	</body>

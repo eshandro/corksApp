@@ -251,11 +251,20 @@ function viewWine(act_id) {
 
 	request.onsuccess = function(event) {
 		var code = '';
+		var object = event.target.result;
 		var start = new Date().getTime();
+		// console.log('start ', start);
 		// console.log('obj from viewWine: ', event.target.result);
-		var diff = timedDifference(start, event.target.result['timeAdded']);
-		console.log('diff: ', diff);
+		// console.log('event.target.result.timeAdded', event.target.result.timeAdded);
+		var diff = timeDifference(start, object['timeAdded']);
+		// console.log('diff: ', diff);
+		console.log(object);
 
+		code += '<h2>' + object.wine_name + '</h2><p>Added <strong>' + object.qty + '</strong> bottles to your cellar.</p><label><strong>You said: </strong></label><p>' + object.note + '</p><label><strong>Wine Description: </strong></label>' + object.wine_desc + '</p><p>You added this wine to your cellar: <strong>' + diff + '</strong>';
+
+		$('#detail').html(code);
+
+		
 
 	}
 }
@@ -264,15 +273,29 @@ function timeDifference(current, original) {
 	var msPerMinute = 60 * 1000;
 	var msPerHour = msPerMinute * 60;
 	var msPerDay = msPerHour * 24;
-	var msperMonth = msPerDay * 30;
-	var msPerYear = msperDay * 365;
+	var msPerMonth = msPerDay * 30;
+	var msPerYear = msPerDay * 365;
 
 	var msElapsed = current - original;
 
 	if (msElapsed < msPerMinute) {
 		return Math.round(msElapsed/1000) + ' seconds ago.';
 	}
-	else if 
+	else if (msElapsed < msPerHour) {
+		return Math.round(msElapsed/msPerMinute) + ' minutes ago.';
+	}
+	else if (msElapsed < msPerDay) {
+		return Math.round(msElapsed/msPerHour) + ' hours ago.';
+	}
+	else if (msElapsed < msPerMonth) {
+		return 'approximately ' + Math.round(msElapsed/msPerDay) + ' days ago.';
+	}
+	else if (msElapsed < msPerYear) {
+		return 'approximately ' + Math.round(msElapsed/msPerMonth) + ' months ago.';
+	}
+	else {
+		'approximately ' + Math.round(msElapsed/msPerYear) + ' years ago.';
+	}
 }
 
 // Document ready
