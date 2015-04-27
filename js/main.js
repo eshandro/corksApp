@@ -346,21 +346,31 @@ function saveUser() {
 
 
 function searchWines(items) {
-	var results = {};
-	var searchTerm = $('#search-basic').val();
+	var results = [];
+	var searchTerm = $('#search-basic').val().toLowerCase();
 	if (!items) {
 		alert('You have no wines in your cellar to search!');
 		return;
 	}
-	var len = items.lenth;
+	var len = items.length;
 	for (var i=0; i < len; i++) {
 		var currentObj = items[i];
-		var objToArray = object.keys(currentObj);
-		var len2 = objToArray.length;
-		
+		var objKeys = Object.keys(currentObj);
+		var len2 = objKeys.length;
+
+		for (var j=0; j < len2; j++) {
+			var key = objKeys[j];
+			var value = currentObj[key];
+			if (typeof value === 'string') {
+				if (value.toLowerCase().indexOf(searchTerm) !== -1) {
+					results.push(currentObj);
+					break;
+				}
+			}
 		}
 	}
-
+	console.log('results ', results);
+	return results;
 }
 
 // Document ready
