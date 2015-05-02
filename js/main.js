@@ -370,7 +370,22 @@ function searchWines(items) {
 		}
 	}
 	console.log('results ', results);
-	return results;
+	$('#my-search-list').listview();
+	var code = '';
+	var len3 = results.length;
+	for (var k=0; k < len3; k++) {
+		var source = $('#search-results-template').html();
+		// console.log('source: ', source);
+		var template = Handlebars.compile(source);
+		// console.log('template: ', template);
+		code += template(results[k]);
+		console.log('results[k] ',results[k]);
+		console.log('code: ', code);
+	}
+	// console.log('code: ', code);
+	$("#my-search-list").html(code);
+	$("#my-search-list").listview('refresh');
+	$('.searchHeader').show();
 }
 
 // Document ready
