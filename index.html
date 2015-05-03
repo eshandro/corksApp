@@ -281,13 +281,14 @@
 
 
 			<div id="my-search" data-role="content">
-				<form id="search-form" data-ajax="false" onsubmit="getAllItems(searchWines); return false;" style="padding-bottom: 25px">
+				<form id="search-form" data-ajax="false" onsubmit="searchWines2(); return false;" style="padding-bottom: 10px">
 					<label for="search-basic">Search Input:</label>
 					<input type="search" name="search" id="search-basic" value="" />
 				</form>
 				
 				<div date-role="content">
 					<h2 class="searchHeader" style="display:none;">Search Results</h2>
+					<h3 class="noResults" style="display:none; color:red;">Your search found no matches. Try again!</h3>
 					<ul data-role="list-view" id="my-search-list"></ul>
 				</div>
 			</div>
@@ -301,8 +302,9 @@
 		<script src="js/helper.js"></script>
 		<script src="js/geo.js"></script>
 		<script src="js/social.js"></script>
-
-		<script src="js/main.js"></script>
+		<script src="js/database.js"></script>
+		<script src="js/util.js"></script>
+		<script src="js/global.js"></script>
 
 		<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
 		<script>
